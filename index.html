@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,75 +11,101 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
+            background-color: #000; /* Changed background color to black */
+            color: #f0f0f0; /* Adjusted default text color for better contrast on black */
             /* Flexbox for centering is now handled by Tailwind classes on body */
         }
         /* Custom styles that Tailwind doesn't directly provide or for specific overrides */
         .output-section {
-            background-color: #e2e8f0; /* bg-gray-200 */
+            background-color: #333; /* Darker background for output section */
             border: none; /* Remove default border as it's part of the outer container */
         }
-        #output {
+        #output, #aiOutput {
             white-space: pre-wrap; /* Preserve whitespace and wrap text */
             font-family: monospace;
             flex-grow: 1; /* Allow output to grow and fill available space */
             overflow-y: auto; /* Enable scrolling for long output */
-            min-height: 200px; /* Minimum height for output area */
+            min-height: 150px; /* Adjusted min-height for both output areas */
+            color: #fff; /* White text for output */
         }
         /* Further refined button hover effects for better feel */
         button:hover {
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add subtle shadow on hover */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Add subtle shadow on hover */
             transform: translateY(-2px); /* Slight lift effect */
         }
         button {
             transition: all 0.2s ease-in-out; /* Smooth transitions for hover effects */
         }
+        select, input[type="text"] { /* Apply styles to text input as well */
+            background-color: #444;
+            color: #fff;
+            border-color: #666;
+        }
+        select:focus, input[type="text"]:focus {
+            border-color: #88f;
+            box-shadow: 0 0 0 0.2rem rgba(136, 136, 255, 0.25);
+        }
+        input::placeholder {
+            color: #ccc;
+        }
     </style>
 </head>
 <body class="flex justify-center items-start min-h-screen p-4 sm:p-6 md:p-8">
-    <div class="container bg-white rounded-xl shadow-xl p-6 sm:p-8 w-full max-w-4xl
+    <div class="container bg-gray-800 rounded-xl shadow-xl p-6 sm:p-8 w-full max-w-4xl
                 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-        <h1 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-6 col-span-full">
+        <h1 class="text-3xl sm:text-4xl font-bold text-center text-white mb-6 col-span-full">
             ✈️ Global Flight Routes App
         </h1>
 
-        <div class="input-section bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6
+        <div class="input-section bg-gray-700 border border-gray-600 rounded-lg p-4 sm:p-6
                     flex flex-col shadow-md">
-            <h2 class="section-title text-xl sm:text-2xl font-bold text-gray-800 mb-4 text-center">Flight Query</h2>
-            <label for="sourceAirport" class="block mb-2 font-semibold text-gray-700 text-base sm:text-lg">Source Airport:</label>
-            <select id="sourceAirport" class="w-full p-2 sm:p-3 mb-4 border border-gray-300 rounded-md text-base
-                                            focus:ring-blue-500 focus:border-blue-500 transition duration-150"></select>
+            <h2 class="section-title text-xl sm:text-2xl font-bold text-white mb-4 text-center">Flight Query</h2>
+            <label for="sourceAirport" class="block mb-2 font-semibold text-gray-300 text-base sm:text-lg">Source Airport:</label>
+            <select id="sourceAirport" class="w-full p-2 sm:p-3 mb-4 border border-gray-500 rounded-md text-base
+                                             focus:ring-blue-500 focus:border-blue-500 transition duration-150"></select>
 
-            <label for="destinationAirport" class="block mb-2 font-semibold text-gray-700 text-base sm:text-lg">Destination Airport:</label>
-            <select id="destinationAirport" class="w-full p-2 sm:p-3 mb-6 border border-gray-300 rounded-md text-base
-                                            focus:ring-blue-500 focus:border-blue-500 transition duration-150"></select>
+            <label for="destinationAirport" class="block mb-2 font-semibold text-gray-300 text-base sm:text-lg">Destination Airport:</label>
+            <select id="destinationAirport" class="w-full p-2 sm:p-3 mb-6 border border-gray-500 rounded-md text-base
+                                             focus:ring-blue-500 focus:border-blue-500 transition duration-150"></select>
 
             <button class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg
-                           hover:bg-blue-700 shadow-md mb-3 text-base sm:text-lg"
+                            hover:bg-blue-700 shadow-md mb-3 text-base sm:text-lg"
                     onclick="getShortestDistanceValue()">Get Shortest Distance (KM)</button>
             <button class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg
-                           hover:bg-blue-700 shadow-md mb-3 text-base sm:text-lg"
+                            hover:bg-blue-700 shadow-md mb-3 text-base sm:text-lg"
                     onclick="getShortestTimeValue()">Get Shortest Time (Minutes)</button>
             <button class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg
-                           hover:bg-blue-700 shadow-md mb-3 text-base sm:text-lg"
+                            hover:bg-blue-700 shadow-md mb-3 text-base sm:text-lg"
                     onclick="getShortestDistancePath()">Get Shortest Path (Distance Wise)</button>
             <button class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg
-                           hover:bg-blue-700 shadow-md mb-6 text-base sm:text-lg"
+                            hover:bg-blue-700 shadow-md mb-6 text-base sm:text-lg"
                     onclick="getShortestTimePath()">Get Shortest Path (Time Wise)</button>
 
+            <!-- Removed Buttons for Min/Max Fare -->
+
             <button class="w-full py-2 px-4 bg-gray-500 text-white font-semibold rounded-lg
-                           hover:bg-gray-600 shadow-md mb-3 text-base sm:text-lg"
+                            hover:bg-gray-600 shadow-md mb-3 text-base sm:text-lg"
                     onclick="displayAllAirports()">List All Airports</button>
             <button class="w-full py-2 px-4 bg-gray-500 text-white font-semibold rounded-lg
-                           hover:bg-gray-600 shadow-md text-base sm:text-lg"
+                            hover:bg-gray-600 shadow-md text-base sm:text-lg"
                     onclick="displayMap()">Show Flight Map</button>
         </div>
 
-        <div class="output-section bg-gray-100 rounded-lg p-4 sm:p-6
+        <div class="output-section bg-gray-900 rounded-lg p-4 sm:p-6
                     flex flex-col shadow-md">
-            <h2 class="section-title text-xl sm:text-2xl font-bold text-gray-800 mb-4 text-center">Output</h2>
-            <pre id="output" class="bg-white border border-gray-300 rounded-md p-3 text-sm md:text-base lg:text-lg text-gray-800"></pre>
+            <h2 class="section-title text-xl sm:text-2xl font-bold text-white mb-4 text-center">Output</h2>
+            <pre id="output" class="bg-gray-800 border border-gray-700 rounded-md p-3 text-sm md:text-base lg:text-lg text-white"></pre>
+
+            <!-- New AI Chatbot Section -->
+            <h2 class="section-title text-xl sm:text-2xl font-bold text-white mt-6 mb-4 text-center">Ask AI Assistant 🤖</h2>
+            <input type="text" id="aiInput" placeholder="e.g., How to find cheap flights?"
+                   class="w-full p-2 sm:p-3 mb-4 border border-gray-500 rounded-md text-base
+                          focus:ring-green-500 focus:border-green-500 transition duration-150">
+            <button class="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-lg
+                            hover:bg-green-700 shadow-md mb-3 text-base sm:text-lg"
+                    onclick="askAI()">Ask AI</button>
+            <pre id="aiOutput" class="bg-gray-800 border border-gray-700 rounded-md p-3 text-sm md:text-base lg:text-lg text-white">AI responses will appear here.</pre>
+            <!-- End AI Chatbot Section -->
         </div>
     </div>
 
@@ -202,7 +230,6 @@
             }
         }
 
-
         // Represents the Graph itself
         class Graph_M {
             constructor() {
@@ -227,7 +254,6 @@
                 this.vtces.get(vname1).nbrs.set(vname2, value);
                 this.vtces.get(vname2).nbrs.set(vname1, value); // Undirected graph
             }
-
 
             // Dijkstra's algorithm re-implemented in JavaScript
             dijkstra(src, des, isTimeCost) {
@@ -264,318 +290,399 @@
 
                     let v = this.vtces.get(rp.vname);
                     for (let [nbr, edgeWeight] of v.nbrs.entries()) {
-                        if (map.has(nbr)) { // Consider only unprocessed neighbors
-                            let oldCost = map.get(nbr).cost;
-                            let newCost;
+                        if (map.has(nbr)) {
+                            let oldPair = map.get(nbr);
+                            // Ensure edgeWeight is an object with 'distance' and 'time' properties
+                            // If it's a number (from older version), convert it to an object for compatibility
+                            let currentEdgeValue = typeof edgeWeight === 'object' ? edgeWeight[isTimeCost ? 'time' : 'distance'] : edgeWeight;
 
-                            if (isTimeCost) {
-                                // Time cost = current accumulated time + 120 (fixed) + 40 * distance_unit
-                                newCost = rp.cost + (120 + 40 * edgeWeight);
-                            } else {
-                                // Distance cost = current accumulated distance + edge distance
-                                newCost = rp.cost + edgeWeight;
-                            }
+                            let newCost = rp.cost + currentEdgeValue;
 
-                            if (newCost < oldCost) {
-                                let gp = map.get(nbr);
-                                // CRITICAL FIX: Use a unique delimiter for path segments
-                                gp.psf = rp.psf + "###" + nbr;
-                                gp.cost = newCost;
-                                pq.updatePriority(gp);
+                            if (newCost < oldPair.cost) {
+                                oldPair.cost = newCost;
+                                oldPair.psf = rp.psf + " -> " + nbr;
+                                pq.updatePriority(oldPair); // Re-heapify
                             }
                         }
                     }
                 }
-                return new PathResult("NO_PATH", -1, 0); // Reference PathResult directly
+                return new PathResult("NO_PATH", -1, 0);
             }
 
-            // Processes raw path for display and interchanges
-            processPathForDisplay(rawPathResult) {
-                if (!rawPathResult || !rawPathResult.path || rawPathResult.path.length === 0 ||
-                    rawPathResult.path === "NO_PATH" || rawPathResult.path === "INVALID_STATIONS") {
-                    return rawPathResult;
+            // BFS for path with minimum interchanges (kept for completeness, though Dijkstra handles shortest path)
+            // Note: This BFS implementation is for finding *a* path and counting interchanges,
+            // not necessarily the *shortest* path by distance/time, which Dijkstra does.
+            bfs(src, des) {
+                if (!this.vtces.has(src) || !this.vtces.has(des)) {
+                    return new PathResult("INVALID_STATIONS", -1, 0);
                 }
 
-                // CRITICAL FIX: Split using the unique delimiter
-                let stations = rawPathResult.path.split("###");
+                let queue = [];
+                let visited = new Set();
+                let pathMap = new Map(); // Stores {vertex: {path: "string", interchanges: count}}
 
-                if (stations.length === 0) {
-                    return new PathResult("NO_PATH", -1, 0); // Reference PathResult directly
-                }
+                queue.push({ vname: src, path: src, interchanges: 0 });
+                visited.add(src);
+                pathMap.set(src, { path: src, interchanges: 0 });
 
-                let formattedPathSegments = [stations[0]];
-                let interchanges = 0;
+                while (queue.length > 0) {
+                    let { vname, path, interchanges } = queue.shift();
 
-                for (let i = 1; i < stations.length; i++) {
-                    let currentStation = stations[i];
-                    let prevStation = stations[i - 1];
-
-                    let prevTildeIndex = prevStation.indexOf('~');
-                    let currentTildeIndex = currentStation.indexOf('~');
-
-                    if (prevTildeIndex === -1 || currentTildeIndex === -1) {
-                        console.error("Error: Malformed airport name detected in path for display. Missing '~' separator.");
-                        console.error(`Problematic segment: Previous Airport: '${prevStation}', Current Airport: '${currentStation}'`);
-                        return new PathResult("PATH_FORMAT_ERROR", -1, 0); // Reference PathResult directly
+                    if (vname === des) {
+                        return new PathResult(path, 0, interchanges); // Cost is 0 for BFS, focus on path/interchanges
                     }
 
-                    let currentLineCode = currentStation.substring(0, currentTildeIndex);
-                    let prevLineCode = prevStation.substring(0, prevTildeIndex);
-
-                    if (currentLineCode !== prevLineCode) {
-                        interchanges++;
-                        formattedPathSegments.push(`CHANGE FROM ${prevLineCode} TO ${currentLineCode} LINE AT ${prevStation}`);
+                    let v = this.vtces.get(vname);
+                    for (let nbr of v.nbrs.keys()) {
+                        if (!visited.has(nbr)) {
+                            visited.add(nbr);
+                            // Calculate interchanges: count segments in path - 1. Each new segment is an additional interchange.
+                            let newPathSegments = path.split(' -> ');
+                            let newInterchanges = newPathSegments.length; // If path is A->B->C, segments are [A, B, C], length 3, 2 interchanges. Next hop makes it 3 interchanges.
+                            let newPath = path + " -> " + nbr;
+                            queue.push({ vname: nbr, path: newPath, interchanges: newInterchanges });
+                            pathMap.set(nbr, { path: newPath, interchanges: newInterchanges });
+                        }
                     }
-                    formattedPathSegments.push(currentStation);
                 }
-
-                let displayPath = `START ==> ${formattedPathSegments[0]}`;
-                for (let i = 1; i < formattedPathSegments.length; i++) {
-                    displayPath += `\n    ==> ${formattedPathSegments[i]}`;
-                }
-                displayPath += `\n    ==> END`;
-
-                return new PathResult(displayPath, rawPathResult.totalCost, interchanges); // Reference PathResult directly
-            }
-
-            // Display all airports
-            displayStations() {
-                let output = "***********************************************************************\n\n";
-                let keys = Array.from(this.vtces.keys());
-                keys.forEach((key, index) => {
-                    output += `${index + 1}. ${key}\n`;
-                });
-                output += "\n***********************************************************************";
-                return output;
-            }
-
-            // Display map
-            displayMap() {
-                let output = "\n\t Flight Routes Map\n";
-                output += "\t------------------\n";
-                output += "----------------------------------------------------\n\n";
-                
-                for (let [key, vertex] of this.vtces.entries()) {
-                    let str = `${key} =>\n`;
-                    for (let [nbr, weight] of vertex.nbrs.entries()) {
-                        str += `\t${nbr}\t`;
-                        // Basic formatting for alignment (adjust as needed)
-                        if (nbr.length < 16) str += "\t";
-                        if (nbr.length < 8) str += "\t";
-                        str += `${weight}\n`;
-                    }
-                    output += str;
-                }
-                output += "\t------------------\n";
-                output += "---------------------------------------------------\n";
-                return output;
-            }
-
-            // Populates the graph with flight routes (Indian focus)
-            createFlightMap() {
-                // Indian Airports
-                this.addVertex("DEL~Indira Gandhi International Airport, Delhi");
-                this.addVertex("BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai");
-                this.addVertex("BLR~Kempegowda International Airport, Bengaluru");
-                this.addVertex("MAA~Chennai International Airport, Chennai");
-                this.addVertex("CCU~Netaji Subhas Chandra Bose International Airport, Kolkata");
-                this.addVertex("HYD~Rajiv Gandhi International Airport, Hyderabad");
-                this.addVertex("AMD~Sardar Vallabhbhai Patel International Airport, Ahmedabad");
-                this.addVertex("PNQ~Pune Airport, Pune");
-                this.addVertex("GOI~Goa International Airport (Dabolim), Goa");
-                this.addVertex("COK~Cochin International Airport, Kochi");
-                this.addVertex("JAI~Jaipur International Airport, Jaipur");
-                this.addVertex("LKO~Chaudhary Charan Singh International Airport, Lucknow");
-                this.addVertex("ATQ~Sri Guru Ram Dass Jee International Airport, Amritsar");
-
-                // Essential International Hubs (connected from India)
-                this.addVertex("LHR~Heathrow Airport, London");
-                this.addVertex("DXB~Dubai International Airport, Dubai");
-                this.addVertex("SIN~Changi Airport, Singapore");
-                this.addVertex("JFK~John F. Kennedy International Airport, New York");
-                this.addVertex("CDG~Charles de Gaulle Airport, Paris");
-                this.addVertex("AUH~Abu Dhabi International Airport, Abu Dhabi");
-                this.addVertex("HKG~Hong Kong International Airport, Hong Kong");
-
-
-                // --- Domestic Indian Flight Routes (weights are 'distance units' for simplicity) ---
-                // Delhi (DEL) connections
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai", 120); // ~2 hrs
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "BLR~Kempegowda International Airport, Bengaluru", 150); // ~2.5 hrs
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "MAA~Chennai International Airport, Chennai", 160); // ~2.7 hrs
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "CCU~Netaji Subhas Chandra Bose International Airport, Kolkata", 120); // ~2 hrs
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "HYD~Rajiv Gandhi International Airport, Hyderabad", 100); // ~1.7 hrs
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "AMD~Sardar Vallabhbhai Patel International Airport, Ahmedabad", 90); // ~1.5 hrs
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "JAI~Jaipur International Airport, Jaipur", 60); // ~1 hr
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "LKO~Chaudhary Charan Singh International Airport, Lucknow", 70); // ~1.2 hrs
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "ATQ~Sri Guru Ram Dass Jee International Airport, Amritsar", 70); // ~1.2 hrs
-
-                // Mumbai (BOM) connections
-                this.addEdge("BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai", "BLR~Kempegowda International Airport, Bengaluru", 90); // ~1.5 hrs
-                this.addEdge("BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai", "MAA~Chennai International Airport, Chennai", 100); // ~1.7 hrs
-                this.addEdge("BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai", "HYD~Rajiv Gandhi International Airport, Hyderabad", 70); // ~1.2 hrs
-                this.addEdge("BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai", "PNQ~Pune Airport, Pune", 30); // ~0.5 hrs
-                this.addEdge("BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai", "GOI~Goa International Airport (Dabolim), Goa", 70); // ~1.2 hrs
-                this.addEdge("BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai", "AMD~Sardar Vallabhbhai Patel International Airport, Ahmedabad", 70); // ~1.2 hrs
-
-                // Bengaluru (BLR) connections
-                this.addEdge("BLR~Kempegowda International Airport, Bengaluru", "MAA~Chennai International Airport, Chennai", 60); // ~1 hr
-                this.addEdge("BLR~Kempegowda International Airport, Bengaluru", "HYD~Rajiv Gandhi International Airport, Hyderabad", 60); // ~1 hr
-                this.addEdge("BLR~Kempegowda International Airport, Bengaluru", "COK~Cochin International Airport, Kochi", 70); // ~1.2 hrs
-                this.addEdge("BLR~Kempegowda International Airport, Bengaluru", "GOI~Goa International Airport (Dabolim), Goa", 60); // ~1 hr
-
-                // Chennai (MAA) connections
-                this.addEdge("MAA~Chennai International Airport, Chennai", "HYD~Rajiv Gandhi International Airport, Hyderabad", 75); // ~1.25 hrs
-                this.addEdge("MAA~Chennai International Airport, Chennai", "COK~Cochin International Airport, Kochi", 80); // ~1.3 hrs
-
-                // Kolkata (CCU) connections
-                this.addEdge("CCU~Netaji Subhas Chandra Bose International Airport, Kolkata", "HYD~Rajiv Gandhi International Airport, Hyderabad", 120); // ~2 hrs
-                this.addEdge("CCU~Netaji Subhas Chandra Bose International Airport, Kolkata", "BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai", 150); // ~2.5 hrs
-
-                // Other domestic connections
-                this.addEdge("HYD~Rajiv Gandhi International Airport, Hyderabad", "GOI~Goa International Airport (Dabolim), Goa", 80); // ~1.3 hrs
-                this.addEdge("PNQ~Pune Airport, Pune", "GOI~Goa International Airport (Dabolim), Goa", 60); // ~1 hr
-
-
-                // --- Key International Connections (from major Indian cities) ---
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "LHR~Heathrow Airport, London", 600);
-                this.addEdge("BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai", "DXB~Dubai International Airport, Dubai", 200);
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "SIN~Changi Airport, Singapore", 380);
-                this.addEdge("BLR~Kempegowda International Airport, Bengaluru", "SIN~Changi Airport, Singapore", 300);
-                this.addEdge("DEL~Indira Gandhi International Airport, Delhi", "JFK~John F. Kennedy International Airport, New York", 800);
-                this.addEdge("BOM~Chhatrapati Shivaji Maharaj International Airport, Mumbai", "CDG~Charles de Gaulle Airport, Paris", 650);
-                this.addEdge("HYD~Rajiv Gandhi International Airport, Hyderabad", "AUH~Abu Dhabi International Airport, Abu Dhabi", 250);
-                this.addEdge("CCU~Netaji Subhas Chandra Bose International Airport, Kolkata", "HKG~Hong Kong International Airport, Hong Kong", 320);
+                return new PathResult("NO_PATH", -1, 0);
             }
         }
 
-        // --- Global Graph Instance ---
-        const flightGraph = new Graph_M();
-        flightGraph.createFlightMap();
+        // --- Data Population ---
+        const g = new Graph_M();
 
-        // --- UI Initialization and Interaction ---
+        // Airport data (Name, IATA Code, City, Lat, Lng)
+        const airports = {
+            "Indira Gandhi International Airport": { iata: "DEL", city: "Delhi", lat: 28.5665, lng: 77.1031 },
+            "Chhatrapati Shivaji Maharaj International Airport": { iata: "BOM", city: "Mumbai", lat: 19.0915, lng: 72.8596 },
+            "Kempegowda International Airport": { iata: "BLR", city: "Bengaluru", lat: 13.1979, lng: 77.7061 },
+            "Chennai International Airport": { iata: "MAA", city: "Chennai", lat: 12.9900, lng: 80.1691 },
+            "Netaji Subhas Chandra Bose International Airport": { iata: "CCU", city: "Kolkata", lat: 22.6538, lng: 88.4447 },
+            "Rajiv Gandhi International Airport": { iata: "HYD", city: "Hyderabad", lat: 17.2300, lng: 78.4294 },
+            "Sardar Vallabhbhai Patel International Airport": { iata: "AMD", city: "Ahmedabad", lat: 23.0784, lng: 72.6225 },
+            "Cochin International Airport": { iata: "COK", city: "Kochi", lat: 10.1520, lng: 76.3934 },
+            "Pune Airport": { iata: "PNQ", city: "Pune", lat: 18.5794, lng: 73.9181 },
+            "Jaipur International Airport": { iata: "JAI", city: "Jaipur", lat: 26.8184, lng: 75.8122 },
+            "Doha Hamad International Airport": { iata: "DOH", city: "Doha", lat: 25.2731, lng: 51.6083 },
+            "Dubai International Airport": { iata: "DXB", city: "Dubai", lat: 25.2532, lng: 55.3653 },
+            "Singapore Changi Airport": { iata: "SIN", city: "Singapore", lat: 1.3644, lng: 103.9915 },
+            "London Heathrow Airport": { iata: "LHR", city: "London", lat: 51.4700, lng: -0.4543 },
+            "New York John F. Kennedy International Airport": { iata: "JFK", city: "New York", lat: 40.6413, lng: -73.7781 },
+            "Sydney Airport": { iata: "SYD", city: "Sydney", lat: -33.9461, lng: 151.1772 },
+            "Tokyo Narita International Airport": { iata: "NRT", city: "Tokyo", lat: 35.7647, lng: 140.3863 },
+            "Frankfurt Airport": { iata: "FRA", city: "Frankfurt", lat: 50.0379, lng: 8.5622 },
+            "Paris Charles de Gaulle Airport": { iata: "CDG", city: "Paris", lat: 49.0097, lng: 2.5479 },
+            "Beijing Capital International Airport": { iata: "PEK", city: "Beijing", lat: 40.0799, lng: 116.6031 }
+        };
+
+        // Add all airports as vertices
+        for (const airportName in airports) {
+            g.addVertex(airportName);
+        }
+
+        // --- Distance and Time Calculation (Haversine formula for distance) ---
+        function toRadians(degree) {
+            return degree * Math.PI / 180;
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of Earth in kilometers
+            const dLat = toRadians(lat2 - lat1);
+            const dLon = toRadians(lon2 - lon1);
+
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; // Distance in kilometers
+        }
+
+        function calculateApproximateTime(distanceKm) {
+            const averageCommercialFlightSpeedKmph = 850; // km/h
+            const timeHours = distanceKm / averageCommercialFlightSpeedKmph;
+            // Add a fixed layover/overhead time per segment (e.g., 60 minutes for boarding/deplaning)
+            // This is a simplification; real flight times are more complex.
+            const overheadMinutesPerSegment = 60;
+            return Math.round(timeHours * 60) + overheadMinutesPerSegment; // Time in minutes
+        }
+
+        // Add edges based on reasonable direct flight connections
+        function addFlightConnection(airport1Name, airport2Name) {
+            const airport1 = airports[airport1Name];
+            const airport2 = airports[airport2Name];
+
+            if (airport1 && airport2) {
+                const distance = calculateDistance(airport1.lat, airport1.lng, airport2.lat, airport2.lng);
+                const time = calculateApproximateTime(distance);
+                g.addEdge(airport1Name, airport2Name, { distance: Math.round(distance), time: time });
+            } else {
+                console.warn(`Could not add edge between ${airport1Name} and ${airport2Name}: one or both airports not found.`);
+            }
+        }
+
+        // Define a set of direct flight connections (you can expand this)
+        addFlightConnection("Indira Gandhi International Airport", "Chhatrapati Shivaji Maharaj International Airport");
+        addFlightConnection("Indira Gandhi International Airport", "Kempegowda International Airport");
+        addFlightConnection("Indira Gandhi International Airport", "Chennai International Airport");
+        addFlightConnection("Indira Gandhi International Airport", "Netaji Subhas Chandra Bose International Airport");
+        addFlightConnection("Indira Gandhi International Airport", "Rajiv Gandhi International Airport");
+        addFlightConnection("Indira Gandhi International Airport", "Sardar Vallabhbhai Patel International Airport");
+        addFlightConnection("Indira Gandhi International Airport", "Jaipur International Airport");
+
+        addFlightConnection("Indira Gandhi International Airport", "Doha Hamad International Airport");
+        addFlightConnection("Indira Gandhi International Airport", "Dubai International Airport");
+        addFlightConnection("Indira Gandhi International Airport", "London Heathrow Airport");
+        addFlightConnection("Indira Gandhi International Airport", "Singapore Changi Airport");
+        addFlightConnection("Indira Gandhi International Airport", "New York John F. Kennedy International Airport");
+
+        addFlightConnection("Chhatrapati Shivaji Maharaj International Airport", "Kempegowda International Airport");
+        addFlightConnection("Chhatrapati Shivaji Maharaj International Airport", "Chennai International Airport");
+        addFlightConnection("Chhatrapati Shivaji Maharaj International Airport", "Rajiv Gandhi International Airport");
+        addFlightConnection("Chhatrapati Shivaji Maharaj International Airport", "Pune Airport");
+        addFlightConnection("Chhatrapati Shivaji Maharaj International Airport", "Cochin International Airport");
+        addFlightConnection("Chhatrapati Shivaji Maharaj International Airport", "Dubai International Airport");
+        addFlightConnection("Chhatrapati Shivaji Maharaj International Airport", "London Heathrow Airport");
+
+        addFlightConnection("Kempegowda International Airport", "Chennai International Airport");
+        addFlightConnection("Kempegowda International Airport", "Rajiv Gandhi International Airport");
+        addFlightConnection("Kempegowda International Airport", "Cochin International Airport");
+        addFlightConnection("Kempegowda International Airport", "Singapore Changi Airport");
+
+        addFlightConnection("Chennai International Airport", "Cochin International Airport");
+        addFlightConnection("Chennai International Airport", "Singapore Changi Airport");
+        addFlightConnection("Chennai International Airport", "Pune Airport"); 
+
+        addFlightConnection("Netaji Subhas Chandra Bose International Airport", "Rajiv Gandhi International Airport");
+        addFlightConnection("Netaji Subhas Chandra Bose International Airport", "Singapore Changi Airport");
+        addFlightConnection("Netaji Subhas Chandra Bose International Airport", "Beijing Capital International Airport");
+
+        addFlightConnection("Rajiv Gandhi International Airport", "Pune Airport");
+        addFlightConnection("Rajiv Gandhi International Airport", "Doha Hamad International Airport");
+
+        addFlightConnection("Doha Hamad International Airport", "London Heathrow Airport");
+        addFlightConnection("Doha Hamad International Airport", "New York John F. Kennedy International Airport");
+
+        addFlightConnection("Dubai International Airport", "London Heathrow Airport");
+        addFlightConnection("Dubai International Airport", "Sydney Airport");
+        addFlightConnection("Dubai International Airport", "Frankfurt Airport");
+
+        addFlightConnection("London Heathrow Airport", "New York John F. Kennedy International Airport");
+        addFlightConnection("London Heathrow Airport", "Frankfurt Airport");
+        addFlightConnection("London Heathrow Airport", "Paris Charles de Gaulle Airport");
+
+        addFlightConnection("New York John F. Kennedy International Airport", "Paris Charles de Gaulle Airport");
+        addFlightConnection("Tokyo Narita International Airport", "Beijing Capital International Airport");
+        addFlightConnection("Singapore Changi Airport", "Sydney Airport");
+        addFlightConnection("Frankfurt Airport", "Beijing Capital International Airport");
+
+
+        // --- UI Initialization ---
         const sourceAirportSelect = document.getElementById('sourceAirport');
         const destinationAirportSelect = document.getElementById('destinationAirport');
         const outputDiv = document.getElementById('output');
+        const aiInput = document.getElementById('aiInput');
+        const aiOutputDiv = document.getElementById('aiOutput');
 
-        function populateAirportSelects() {
-            const airports = Array.from(flightGraph.vtces.keys()).sort(); // Sort alphabetically
-            airports.forEach(airport => {
+
+        function populateAirportDropdowns() {
+            const sortedAirportNames = Object.keys(airports).sort(); // Sort alphabetically
+
+            sortedAirportNames.forEach(airportName => {
                 const option1 = document.createElement('option');
-                option1.value = airport;
-                option1.textContent = airport;
+                option1.value = airportName;
+                option1.textContent = airportName;
                 sourceAirportSelect.appendChild(option1);
 
                 const option2 = document.createElement('option');
-                option2.value = airport;
-                option2.textContent = airport;
+                option2.value = airportName;
+                option2.textContent = airportName;
                 destinationAirportSelect.appendChild(option2);
             });
         }
 
-        function getSelectedAirports() {
+        // Call this on page load to fill the dropdowns
+        document.addEventListener('DOMContentLoaded', populateAirportDropdowns);
+
+
+        // --- Button Functions ---
+        function getShortestDistanceValue() {
             const source = sourceAirportSelect.value;
             const destination = destinationAirportSelect.value;
-
             if (!source || !destination) {
                 outputDiv.textContent = "Please select both source and destination airports.";
-                return null;
+                return;
             }
-            if (!flightGraph.vtces.has(source) || !flightGraph.vtces.has(destination)) {
-                outputDiv.textContent = "Selected airport(s) not found in the map. This should not happen.";
-                return null;
-            }
-            return { source, destination };
-        }
-
-        function runPathfinding(isTimeCost, getPathDetails) {
-            const airports = getSelectedAirports();
-            if (!airports) return;
-
-            const { source, destination } = airports;
-            let result;
-
-            // Simple path existence check (DFS style, as in Java code)
-            const hasPath = (src, des, visited = new Set()) => {
-                if (src === des) return true;
-                visited.add(src);
-                const vertex = flightGraph.vtces.get(src);
-                if (!vertex) return false; // Should not happen
-                for (let nbr of vertex.nbrs.keys()) {
-                    if (!visited.has(nbr)) {
-                        if (hasPath(nbr, des, visited)) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            };
-
-            if (!hasPath(source, destination)) {
-                 outputDiv.textContent = `NO PATH EXISTS BETWEEN ${source} AND ${destination}.`;
-                 return;
-            }
-
-            // Run Dijkstra
-            const rawResult = flightGraph.dijkstra(source, destination, isTimeCost);
-
-            if (rawResult.totalCost === -1 || rawResult.path === "NO_PATH" || rawResult.path === "INVALID_STATIONS") {
-                outputDiv.textContent = `Could not calculate path. Error: ${rawResult.path}`;
+            if (source === destination) {
+                outputDiv.textContent = `Source and Destination airports are the same: ${source}. Distance is 0 KM.`;
                 return;
             }
 
-            if (getPathDetails) {
-                result = flightGraph.processPathForDisplay(rawResult);
-                if (result.path === "PATH_FORMAT_ERROR") {
-                    outputDiv.textContent = "Error processing path for display. Malformed airport name detected.";
-                    return;
-                }
-                let outputStr = `SOURCE AIRPORT: ${source}\n`;
-                outputStr += `DESTINATION AIRPORT: ${destination}\n`;
-                if (isTimeCost) {
-                    outputStr += `TOTAL TIME: ${Math.ceil(result.totalCost / 60)} MINUTES\n`;
-                } else {
-                    outputStr += `TOTAL DISTANCE: ${result.totalCost} KM\n`;
-                }
-                outputStr += `NUMBER OF INTERCHANGES: ${result.interchangeCount}\n`;
-                outputStr += `~~~~~~~~~~~~~\n${result.path}\n~~~~~~~~~~~~~`;
-                outputDiv.textContent = outputStr;
+            const result = g.dijkstra(source, destination, false); // false for distance
+            if (result.totalCost !== -1) {
+                outputDiv.textContent = `Shortest Distance from ${source} to ${destination}: ${result.totalCost} KM`;
+            } else if (result.path === "INVALID_STATIONS") {
+                outputDiv.textContent = "Error: Invalid source or destination airport selected.";
             } else {
-                if (isTimeCost) {
-                    outputDiv.textContent = `SHORTEST TIME FROM ${source} TO ${destination} IS ${Math.ceil(rawResult.totalCost / 60)} MINUTES`;
-                } else {
-                    outputDiv.textContent = `SHORTEST DISTANCE FROM ${source} TO ${destination} IS ${rawResult.totalCost} KM`;
-                }
+                outputDiv.textContent = `No direct or connecting flight path found from ${source} to ${destination}.`;
             }
         }
 
-        // --- Button Click Handlers ---
-        function getShortestDistanceValue() {
-            runPathfinding(false, false);
-        }
-
         function getShortestTimeValue() {
-            runPathfinding(true, false);
+            const source = sourceAirportSelect.value;
+            const destination = destinationAirportSelect.value;
+            if (!source || !destination) {
+                outputDiv.textContent = "Please select both source and destination airports.";
+                return;
+            }
+            if (source === destination) {
+                outputDiv.textContent = `Source and Destination airports are the same: ${source}. Time is 0 Minutes.`;
+                return;
+            }
+
+            const result = g.dijkstra(source, destination, true); // true for time
+            if (result.totalCost !== -1) {
+                const hours = Math.floor(result.totalCost / 60);
+                const minutes = result.totalCost % 60;
+                outputDiv.textContent = `Shortest Time from ${source} to ${destination}: ${hours} hours and ${minutes} minutes`;
+            } else if (result.path === "INVALID_STATIONS") {
+                outputDiv.textContent = "Error: Invalid source or destination airport selected.";
+            } else {
+                outputDiv.textContent = `No direct or connecting flight path found from ${source} to ${destination}.`;
+            }
         }
 
         function getShortestDistancePath() {
-            runPathfinding(false, true);
+            const source = sourceAirportSelect.value;
+            const destination = destinationAirportSelect.value;
+            if (!source || !destination) {
+                outputDiv.textContent = "Please select both source and destination airports.";
+                return;
+            }
+            if (source === destination) {
+                outputDiv.textContent = `Source and Destination airports are the same: ${source}. Path: ${source}`;
+                return;
+            }
+
+            const result = g.dijkstra(source, destination, false); // false for distance
+            if (result.totalCost !== -1) {
+                const pathArray = result.path.split(" -> ");
+                const interchanges = pathArray.length - 2; // Number of stops (excluding start and end)
+                outputDiv.textContent = `Shortest Path (Distance Wise) from ${source} to ${destination}:\n` +
+                                        `Path: ${result.path}\n` +
+                                        `Total Distance: ${result.totalCost} KM\n` +
+                                        `Number of Interchanges: ${Math.max(0, interchanges)}`;
+            } else if (result.path === "INVALID_STATIONS") {
+                outputDiv.textContent = "Error: Invalid source or destination airport selected.";
+            } else {
+                outputDiv.textContent = `No direct or connecting flight path found from ${source} to ${destination}.`;
+            }
         }
 
         function getShortestTimePath() {
-            runPathfinding(true, true);
+            const source = sourceAirportSelect.value;
+            const destination = destinationAirportSelect.value;
+            if (!source || !destination) {
+                outputDiv.textContent = "Please select both source and destination airports.";
+                return;
+            }
+            if (source === destination) {
+                outputDiv.textContent = `Source and Destination airports are the same: ${source}. Path: ${source}`;
+                return;
+            }
+
+            const result = g.dijkstra(source, destination, true); // true for time
+            if (result.totalCost !== -1) {
+                const pathArray = result.path.split(" -> ");
+                const interchanges = pathArray.length - 2; // Number of stops
+                const hours = Math.floor(result.totalCost / 60);
+                const minutes = result.totalCost % 60;
+                outputDiv.textContent = `Shortest Path (Time Wise) from ${source} to ${destination}:\n` +
+                                        `Path: ${result.path}\n` +
+                                        `Total Time: ${hours} hours and ${minutes} minutes\n` +
+                                        `Number of Interchanges: ${Math.max(0, interchanges)}`;
+            } else if (result.path === "INVALID_STATIONS") {
+                outputDiv.textContent = "Error: Invalid source or destination airport selected.";
+            } else {
+                outputDiv.textContent = `No direct or connecting flight path found from ${source} to ${destination}.`;
+            }
         }
 
         function displayAllAirports() {
-            outputDiv.textContent = flightGraph.displayStations();
+            const sortedAirportNames = Object.keys(airports).sort();
+            let outputText = "Available Airports:\n";
+            sortedAirportNames.forEach(name => {
+                const airportInfo = airports[name];
+                outputText += `- ${name} (${airportInfo.iata}, ${airportInfo.city})\n`;
+            });
+            outputDiv.textContent = outputText;
         }
 
         function displayMap() {
-            outputDiv.textContent = flightGraph.displayMap();
+            outputDiv.textContent = "Map display functionality would require external libraries or APIs (e.g., Google Maps, OpenStreetMap) which cannot be added to this single HTML file. This would typically open a new tab/window with a map, or render it inline if the setup allowed.";
         }
 
-        // Initialize selects on page load
-        document.addEventListener('DOMContentLoaded', populateAirportSelects);
+        // --- Removed Fare Prediction Functions (Mock Data) ---
+        // The mockFares object and getMinFare/getMaxFare functions are no longer needed
+        // as the corresponding buttons have been removed.
+
+        // --- AI Chatbot Functionality ---
+        async function askAI() {
+            const userQuery = aiInput.value.trim();
+            if (!userQuery) {
+                aiOutputDiv.textContent = "Please enter a question for the AI assistant.";
+                return;
+            }
+
+            aiOutputDiv.textContent = "AI is thinking... 🧠"; // Loading indicator
+
+            try {
+                const prompt = `You are a helpful AI assistant specialized in flight and travel information. Answer the following question concisely and informatively. If the question is not related to flights or travel, politely state that you can only assist with travel-related queries.
+                
+                User question: "${userQuery}"`;
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                const payload = { contents: chatHistory };
+                const apiKey = "AIzaSyCpH0ml1my2wColLi21fE6EOJ3zRfbk6SM"; // Canvas will automatically provide this in runtime
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                // Check if the response itself was successful (HTTP status code 2xx)
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("Gemini API HTTP Error:", response.status, response.statusText, errorData);
+                    aiOutputDiv.textContent = `Error: ${response.status} ${response.statusText}. Please try again.`;
+                    return;
+                }
+
+                const result = await response.json();
+                console.log("Gemini API raw response:", result); // Log the full response for debugging
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    aiOutputDiv.textContent = text;
+                } else {
+                    // More specific error message if content is missing or empty
+                    aiOutputDiv.textContent = "Sorry, I couldn't get a valid response from the AI. The response might be empty or malformed. Please try again.";
+                    console.error("AI response structure unexpected or empty content:", result);
+                }
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                aiOutputDiv.textContent = "An error occurred while connecting to the AI. Please check your network connection or try again later.";
+            }
+        }
+        // --- End AI Chatbot Functionality ---
+
     </script>
 </body>
 </html>
